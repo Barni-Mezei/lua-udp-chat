@@ -31,6 +31,16 @@ local function generate_aliases()
     end
 end
 
+
+-- Prints a colored help message line
+function print_help(arg_name, arg_type, default_value, description)
+    io.write(arg_name.." ")
+    write_color("("..arg_type..")", colors.gray)
+    io.write(": ")
+    write_color(default_value, colors.yellow)
+    print(" - "..description)
+end
+
 function list_arguments()
     for _,arg in pairs(args) do
         print_help(arg.name, arg.type, arg.default, arg.description)
@@ -55,8 +65,7 @@ function parse(raw_args)
         if raw_args[i] == "help" or raw_args[i] == "-h" then
             list_arguments()
 
-            minet_exit()
-            error()
+            os.exit()
         end
 
         -- Execute argument action
@@ -68,7 +77,7 @@ function parse(raw_args)
 
             if action == "set" then
                 settings[path] = convert(raw_args[i], arg_type)
-                print_color(("Conf. %s: %s"):format(
+                print_color(("Set %s: %s"):format(
                     string.upper(name),
                     tostring(raw_args[i])
                 ), colors.gray)

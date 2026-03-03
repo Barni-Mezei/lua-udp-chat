@@ -23,6 +23,12 @@ local function pprint_iter(data, depth)
         out = ("%s%s\"%s\"%s"):format(out, colors.yellow, data, colors.white)
     elseif type(data) == "number" then
         out = ("%s%s%s%s"):format(out, colors.red, data, colors.white)
+    elseif type(data) == "boolean" then
+        if data == true then
+            out = ("%s%s%s%s"):format(out, colors.green, data, colors.white)
+        else
+            out = ("%s%s%s%s"):format(out, colors.red, data, colors.white)
+        end
     else
         out = out .. tostring(data)
     end
@@ -39,6 +45,12 @@ end
 function print_color(text, color)
     local c = color or ""
     print(("%s%s%s"):format(c, text, colors.white))
+end
+
+-- Writes a text in color
+function write_color(text, color)
+    local c = color or ""
+    io.write(("%s%s%s"):format(c, text, colors.white))
 end
 
 -- Halts execution for the given amount of milliseconds
