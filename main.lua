@@ -140,8 +140,6 @@ function client_mode()
     -- Set packet read timeout
     receiver_udp:settimeout(1)
 
-
-
     local str = makePacket("join", {
         msg = ("<%s> joined the chat"):format(settings.username),
         username = settings.username,
@@ -150,35 +148,40 @@ function client_mode()
 
     res, err = sender_udp:send(str)
 
+    print("Requesting ID...")
+
     while true do
         local str = receiver_udp:receive()
         
+        -- Handle received packages
         if str ~= nil then 
             local data = json.decode(str, 1)
 
             pprint(data)
 
             if data.type == 1 then
-                -- Someone joined
-                print(data.id)
+                print("Id got:", data.id)
+                client_id = data.id
             end
 
         end
+
+        -- Handle user input
+        if client_id ~= -1 then
+            local message = ("<%s>: "):format(settings.username)
+            io.write(message)
+            message = message .. io.read()
+
+            local str = makePacket("message", {
+                msg = message,
+                username = settings.username,
+                id = settings.client_id,
+            })
+    
+            res, err = sender_udp:send(str)
+        end
+
     end
-
-    --[[while true do
-        local message = ("<%s>: "):format(settings.username)
-        io.write(message)
-        message = message .. io.read()
-
-        local str = makePacket("message", {
-            msg = message,
-            username = settings.username,
-            id = settings.client_id,
-        })
-
-        res, err = sender_udp:send(str)
-    end]]
 end
 
 ----------
