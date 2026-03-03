@@ -104,25 +104,22 @@ local function server_mode()
         if str ~= nil then 
             local data = json.decode(str, 1)
 
-            pprint(data)
+            --pprint(data)
+
+            if data.msg ~= nil then
+                print(data.msg)
+            end
 
             if data.type == 0 then
-                -- Someone joined
-                print(data.msg)
-                
+                -- Someone joined, generate an ID fro them
                 client_id = client_id + 1
                 local str = makePacket("ack", {
                     id = client_id
                 })
 
-                print("Waiting...")
-                sleep(1)
-
                 sender_udp:sendto(str, data.ip, settings.port)
-                print("Sending ack", data.ip, settings.port, client_id)
-
+                print(("Accepted %s from %s with ID: %s"):format(data.username, data.ip, client_id))
             end
-
         end
     end
 end
@@ -157,13 +154,10 @@ function client_mode()
         if str ~= nil then 
             local data = json.decode(str, 1)
 
-            pprint(data)
-
             if data.type == 1 then
-                print("Id got:", data.id)
+                print(("Connected with ID: %s"):format(data.id))
                 client_id = data.id
             end
-
         end
 
         -- Handle user input
