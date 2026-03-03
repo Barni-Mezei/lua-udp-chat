@@ -1,11 +1,43 @@
 require "common"
+require "argparse"
 
 local socket = require("socket")
 local udp = socket.udp()
 local res, err
 
+settings = {
+    address = "0.0.0.0"
+    port = 8000
+    username = "unknown"
+}
+
 -- Start program
 local args = { ... }
+
+add_argument(
+    "port", {"port", "-p"},
+    "number", "8000", "The port of the server",
+    "set", "port"
+)
+
+add_argument(
+    "address", {"ip", "adr", "address", "-a"},
+    "string", "0.0.0.0", "The IP of the server",
+    "set", "address"
+)
+
+add_argument(
+    "username", {"username", "name", "-u"},
+    "string", "unknown", "The username of this client",
+    "set", "username"
+)
+
+parse(args)
+
+pprint(settings)
+
+error()
+
 
 if #args == 0 then
     -- Client mode

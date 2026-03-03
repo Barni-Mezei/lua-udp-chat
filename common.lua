@@ -35,6 +35,12 @@ function pprint(data)
     print(pprint_iter(data))
 end
 
+-- Prints a text in color
+function print_color(text, color)
+    local c = color or ""
+    print(("%s%s%s"):format(c, text, colors.white))
+end
+
 -- Halts execution for the given amount of milliseconds
 function sleep(ms) 
     local sec = tonumber(os.clock() + ms/1000); 
