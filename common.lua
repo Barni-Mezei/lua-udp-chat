@@ -20,7 +20,14 @@ local function pprint_iter(data, depth)
             out = out .. string.rep("    ", d) .. "}"
         end
     elseif type(data) == "string" then
-        out = ("%s%s\"%s\"%s"):format(out, colors.yellow, data, colors.white)
+        
+        out = ("%s%s\"%s\"%s"):format(
+            out,
+            colors.yellow,
+            data,
+            colors.white
+        )
+
     elseif type(data) == "number" then
         out = ("%s%s%s%s"):format(out, colors.red, data, colors.white)
     elseif type(data) == "boolean" then
@@ -39,18 +46,6 @@ end
 -- Prints a value to the terminal
 function pprint(data)
     print(pprint_iter(data))
-end
-
--- Prints a text in color
-function print_color(text, color)
-    local c = color or ""
-    print(("%s%s%s"):format(c, text, colors.white))
-end
-
--- Writes a text in color
-function write_color(text, color)
-    local c = color or ""
-    io.write(("%s%s%s"):format(c, text, colors.white))
 end
 
 -- Halts execution for the given amount of milliseconds

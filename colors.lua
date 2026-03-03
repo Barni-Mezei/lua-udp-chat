@@ -10,3 +10,15 @@ colors = {
     light_gray = "\27[37m",
     white = "\27[m",
 }
+
+-- Prints a text in color
+function print_color(text, color)
+    local c = color or ""
+    print(("%s%s%s"):format(c, text, colors.white))
+end
+
+-- Writes a text in color
+function write_color(text, color)
+    local c = color or ""
+    io.write(("%s%s%s"):format(c, text, colors.white))
+end
